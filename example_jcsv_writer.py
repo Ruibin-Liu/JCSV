@@ -15,16 +15,16 @@ def export_jcsv(
     descriptions = descriptions or {}
     
     # 1) Precompute how many lines the manifest will take
-    #    (#manifest + header + one line per table)
-    manifest_line_count = 1 + 1 + len(tables)
+    #    (#manifest + header + one line per table + 1 empty line)
+    manifest_line_count = 1 + 1 + len(tables) + 1
     
     # 2) Compute start_line for each table
     start_lines: dict[str, int] = {}
     cursor = manifest_line_count + 1
     for name, df in tables.items():
         start_lines[name] = cursor
-        # each block: 1 title + 1 column header + N data rows
-        cursor += 2 + len(df)
+        # each block: 1 title + 1 column header + N data rows + 1 empty line
+        cursor += 2 + len(df) + 1
     
     # 3) Write everything
     with open(path, 'w', encoding='utf-8', newline='\n') as f:
