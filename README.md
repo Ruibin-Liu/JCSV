@@ -19,8 +19,7 @@ Use `.jcsv` to signal that a file follows the JCSV conventions.
   An optional top‐level block named `#manifest` that lists every table, its start line, and description.
 
 - Table Block  
-  A header line beginning with `#table_name{…}` followed by standard CSV rows.
-
+  A **title line** beginning with `#table_name{…}` and is followed by a standard CSV section—its first row is the column header and subsequent rows are data.
 - Metadata  
   Key/value annotations inside `{…}` on the table header.
 
@@ -41,10 +40,10 @@ If `#manifest` is absent, parsers fall back to scanning for every `#` marker.
 
 ### Reserved Manifest Columns
 
-Inside the #manifest block, these column headers are reserved:
+Inside the `#manifest` block, these column headers are reserved:
 
 - `table` (required): The exact block name of each table.
-- `start_line` (optional): The 1-based line number where that block’s header begins.
+- `start_line` (optional): The 1-based line number where that block’s **title line** (`#table_name{...}`) begins.
 - `description` (required): A short, human-readable summary of the table’s contents.
 
 ---
@@ -85,7 +84,7 @@ These **optional** but **reserved** keys may appear inside {…} on any table he
 - `version`: A numeric or semantic version tag for the table. Example: `version=1.2.0`.
 - `refs`: A list of column names whose values reference other block names for multi-line nesting. Example: `refs=[order,details]`.
 
-Additional keys may be defined arbitrarily as needed if they don't overlap with any reserved keys and keywords.
+Additional keys may be defined arbitrarily as needed if they don't overlap with any of the reserved metadata keys above.
 
 ---
 
@@ -173,6 +172,15 @@ order_id,user_name,order
    - A collection of top-level tables plus any nested tables injected according to `refs`.  
    - Legacy tools ignore metadata and simply see valid CSV blocks.
 
+---
+
+## Other partially reserved block, manifest column, and metadata key names.
+
+Use them with caution in that they maybe interpreted as a defined meaning in the future version.
+
+- `block names`: `#schema`, `#config`, `#settings`, `#extensions`.
+- `manifest colum names`: `dependencies`, `row_count`, `checksum`, `file_size`, `tags`, `last_modified`
+-  `metadata key names`: `primary_key`, `foreign_keys`, `unique`, `indexes`, `default`, `nullable`, `constraints`, `checksum`, `encoding`, `delimiter`, `quotechar`, `author`, `license`, `source`, `tags`.
 
 ---
 
